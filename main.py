@@ -13,8 +13,6 @@ def main():
             break
 
 
-
-
 def acceptCommand():
     print("1 - Просмотр каталога")
     print("2 - На уровень вверх")
@@ -49,7 +47,6 @@ def runCommand(command):
 
 
 
-
 '''
 доп функция, показывает весь каталог
 '''
@@ -59,6 +56,7 @@ def directory(directory):
         print(i)
     print('in catalogue:', directory)
 
+
 '''
 показывает каталоги ниже текущего в дереве
 '''
@@ -66,7 +64,6 @@ def moveUp():
     os.chdir("..")
     currentDir = os.getcwd()
     print('current catalogue:', currentDir)
-
 
 
 '''
@@ -91,6 +88,7 @@ def countFiles(path):
     for /// in os.walk(path):
         cntr += len()
     return cntr
+
 
 '''
 аналогично предыдущему
