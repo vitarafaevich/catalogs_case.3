@@ -11,6 +11,7 @@ def main():
         if command == 7:
             print("the end")
             break
+    return currentDir
 
 
 def acceptCommand():
@@ -36,6 +37,7 @@ def acceptCommand():
 определяет по номеру command, какую функцию следует выполнить. 
 '''
 def runCommand(command):
+    currentDir = os.getcwd
     if command == 1:
         directory(currentDir)
     elif command == 2:
@@ -43,6 +45,9 @@ def runCommand(command):
     elif command == 3:
         moveDown(currentDir)
     elif command == 4:
+        countFiles(currentDir)
+    elif command == 4:
+        countBytes(currentDir)
 
 
 
@@ -85,7 +90,7 @@ def moveDown(currentDir):
 '''
 def countFiles(path):
     cntr = 0
-    for /// in os.walk(path):
+    for _ in os.walk(path):
         cntr += len()
     return cntr
 
@@ -93,7 +98,17 @@ def countFiles(path):
 '''
 аналогично предыдущему
 '''
+'''address на каждой итерации связывается с первым элементом очередного кортежа (строкой, содержащей адрес каталога) 
+dirs – со вторым элементом (списком подкаталогов), 
+files - со списком файлов этого каталога. Во вложенном цикле извлекается имя каждого файла из списка файлов.'''
 def countBytes(path):
+    file_size = 0
+    for address, dirs, files in os.walk(path):
+        for name in files:
+            path = os.path.join(address, name)
+            file_size = os.path.getsize(path)
+    return file_size
+
 
 
 
@@ -102,6 +117,17 @@ def countBytes(path):
 кто такой target
 '''
 def findFiles(target, path):
+    targets = []
+    for address, dirs, files in os.walk(path):
+        for name in files:
+            if target in name:
+                targets.append(os.path.join(address, name))
+    if not targets:
+        print(f"Файлы с '{target}' в имени в каталоге {path} не найдены.")
+    else:
+        print(f"Найденные файлы с '{target}' в имени:")
+        for file_path in targets:
+            print(file_path)
 
 
 main()
