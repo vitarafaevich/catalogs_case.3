@@ -1,7 +1,6 @@
 import os
 
 
-'программа начинается в текущем каталоге'
 def main():
     currentDir = os.getcwd()
     print('Текущий каталог:', currentDir)
@@ -27,15 +26,7 @@ def acceptCommand():
         command = int(input("Not correct :( Try again :) "))
     return command
 
-'''
-(1. просмотр каталога. 2. на уровень вверх. 3. на уровень вниз. 
-4. количество файлов в каталогах. 5. размер текущего каталога (в байтах). 
-6. поиск файла. 7. выход из программы.
-'''
 
-'''
-определяет по номеру command, какую функцию следует выполнить. 
-'''
 def runCommand(command):
     currentDir = os.getcwd()
     if command == 1:
@@ -53,11 +44,6 @@ def runCommand(command):
         print(findFiles(target, currentDir))
 
 
-
-
-'''
-доп функция, показывает весь каталог
-'''
 def directory(directory):
     files_under = os.listdir(directory)
     for i in files_under:
@@ -65,19 +51,12 @@ def directory(directory):
     print('in catalogue:', directory)
 
 
-'''
-показывает каталоги ниже текущего в дереве
-'''
 def moveUp():
     os.chdir("../")
     currentDir = os.getcwd()
     print('current catalogue:', currentDir)
 
 
-'''
-запрашивает имя подкаталога, при корректности делать каталог находящийся в currentDir текущим.
-проверка идет только внииииз!!! значит должны присоединять к текущему пути
-'''
 def moveDown(currentDir):
     tryDir = input('please, write catalogue name: ')
     tryingDir = os.path.join(currentDir, tryDir)
@@ -89,9 +68,6 @@ def moveDown(currentDir):
         print('name is not found, try again')
 
 
-'''
-делать walk, но судя по всему через 3 кортежа - путь к файлу, папака внутри и сам файл
-'''
 def countFiles(path):
     cnt = 0
     if os.path.isfile(path):
@@ -126,5 +102,6 @@ def findFiles(target, path):
     if not targets:
         print(f"Файлы с '{target}' в имени в каталоге {path} не найдены.")
     return targets
+
 
 main()
