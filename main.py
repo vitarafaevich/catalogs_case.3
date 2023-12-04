@@ -41,15 +41,16 @@ def runCommand(command):
     if command == 1:
         directory(currentDir)
     elif command == 2:
-        moveUp(currentDir)
+        moveUp()
     elif command == 3:
         moveDown(currentDir)
     elif command == 4:
-        countFiles(currentDir)
+        print(countFiles(currentDir))
     elif command == 5:
-        countBytes(currentDir)
+        print(countBytes(currentDir))
     elif command == 6:
-        findFiles(target, currentDir)
+        target = input()
+        print(findFiles(target, currentDir))
 
 
 
@@ -68,7 +69,7 @@ def directory(directory):
 показывает каталоги ниже текущего в дереве
 '''
 def moveUp():
-    os.chdir("..")
+    os.chdir("../")
     currentDir = os.getcwd()
     print('current catalogue:', currentDir)
 
@@ -81,6 +82,7 @@ def moveDown(currentDir):
     tryDir = input('please, write catalogue name: ')
     tryingDir = os.path.join(currentDir, tryDir)
     if os.path.exists(tryingDir):
+        os.chdir(tryingDir)
         currentDir = os.getcwd()
         print('current catalogue:', currentDir)
     else:
@@ -91,39 +93,38 @@ def moveDown(currentDir):
 делать walk, но судя по всему через 3 кортежа - путь к файлу, папака внутри и сам файл
 '''
 def countFiles(path):
-    cntr = 0
-    for address, dirs, files in os.walk(path):
-        cntr += len(files)
-    return cntr
+    cnt = 0
+    if os.path.isfile(path):
+        return 1
+    else:
+        for item in os.listdir(path):
+            item_path = os.path.join(path, item)
+            cnt += countFiles(item_path)
+    return cnt
 
 
-'''
-аналогично предыдущему
-'''
-'''address на каждой итерации связывается с первым элементом очередного кортежа (строкой, содержащей адрес каталога) 
-dirs – со вторым элементом (списком подкаталогов), 
-files - со списком файлов этого каталога. Во вложенном цикле извлекается имя каждого файла из списка файлов.'''
 def countBytes(path):
     file_size = 0
-    for address, dirs, files in os.walk(path):
-        for name in files:
-            path = os.path.join(address, name)
-            file_size += os.path.getsize(path)
+    if os.path.isfile(path):
+        return os.path.getsize(path)
+    else:
+        for item in os.listdir(path):
+            item_path = os.path.join(path, item)
+            file_size += countBytes(item_path)
     return file_size
 
 
 def findFiles(target, path):
     targets = []
-    for address, dirs, files in os.walk(path):
-        for name in files:
-            if target in name:
-                targets.append(os.path.join(address, name))
+    if os.path.isfile(path):
+        if target in os.path.basename(path):
+            return [path]
+    elif os.path.isdir(path):
+        for item in os.listdir(path):
+            item_path = os.path.join(path, item)
+            targets.extend(findFiles(target, item_path))
     if not targets:
         print(f"Файлы с '{target}' в имени в каталоге {path} не найдены.")
-    else:
-        print(f"Найденные файлы с '{target}' в имени:")
-        for file_path in targets:
-            print(file_path)
     return targets
 
 main()
