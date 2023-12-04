@@ -3,7 +3,7 @@ import os
 
 'программа начинается в текущем каталоге'
 def main():
-    currentDir = os.getcwd
+    currentDir = os.getcwd()
     print('Текущий каталог:', currentDir)
     while True:
         command = acceptCommand()
@@ -37,7 +37,7 @@ def acceptCommand():
 определяет по номеру command, какую функцию следует выполнить. 
 '''
 def runCommand(command):
-    currentDir = os.getcwd
+    currentDir = os.getcwd()
     if command == 1:
         directory(currentDir)
     elif command == 2:
@@ -46,8 +46,10 @@ def runCommand(command):
         moveDown(currentDir)
     elif command == 4:
         countFiles(currentDir)
-    elif command == 4:
+    elif command == 5:
         countBytes(currentDir)
+    elif command == 6:
+        findFiles(target, currentDir)
 
 
 
@@ -79,7 +81,7 @@ def moveDown(currentDir):
     tryDir = input('please, write catalogue name: ')
     tryingDir = os.path.join(currentDir, tryDir)
     if os.path.exists(tryingDir):
-        currentDir = tryingDir
+        currentDir = os.getcwd()
         print('current catalogue:', currentDir)
     else:
         print('name is not found, try again')
@@ -90,8 +92,8 @@ def moveDown(currentDir):
 '''
 def countFiles(path):
     cntr = 0
-    for _ in os.walk(path):
-        cntr += len()
+    for address, dirs, files in os.walk(path):
+        cntr += len(files)
     return cntr
 
 
@@ -106,16 +108,10 @@ def countBytes(path):
     for address, dirs, files in os.walk(path):
         for name in files:
             path = os.path.join(address, name)
-            file_size = os.path.getsize(path)
+            file_size += os.path.getsize(path)
     return file_size
 
 
-
-
-
-'''
-кто такой target
-'''
 def findFiles(target, path):
     targets = []
     for address, dirs, files in os.walk(path):
@@ -128,6 +124,6 @@ def findFiles(target, path):
         print(f"Найденные файлы с '{target}' в имени:")
         for file_path in targets:
             print(file_path)
-
+    return targets
 
 main()
