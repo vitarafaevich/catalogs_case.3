@@ -41,11 +41,16 @@ def runCommand(command):
         print(countBytes(currentDir))
     elif command == 6:
         target = input()
-        print(findFiles(target, currentDir))
+        name = findFiles(target, currentDir)
+        if name == []:
+            print(f"Файлы с '{target}' в имени в каталоге {currentDir} не найдены.")
+        else:
+            print(name)
 
 
 def directory(directory):
     files_under = os.listdir(directory)
+    print(files_under)
     for i in files_under:
         print(i)
     print('in catalogue:', directory)
@@ -99,8 +104,6 @@ def findFiles(target, path):
         for item in os.listdir(path):
             item_path = os.path.join(path, item)
             targets.extend(findFiles(target, item_path))
-    if not targets:
-        print(f"Файлы с '{target}' в имени в каталоге {path} не найдены.")
     return targets
 
 
