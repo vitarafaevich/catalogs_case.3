@@ -1,29 +1,32 @@
 import os
+import ru_local as ru
+
+WAY_UP = "../"
 
 
 def main():
     currentDir = os.getcwd()
-    print('Текущий каталог:', currentDir)
+    print(ru.CURRENT, currentDir)
     while True:
         command = acceptCommand()
         runCommand(command)
         if command == 7:
-            print("the end")
+            print(ru.END)
             break
     return currentDir
 
 
 def acceptCommand():
-    print("1 - Просмотр каталога")
-    print("2 - На уровень вверх")
-    print("3 - На уровень вниз")
-    print("4 - Количество файлов в каталогах")
-    print("5 - Размер текущего каталога (в байтах)")
-    print("6 - Поиск файла")
-    print("7 - Выход из программы")
-    command = int(input("Введите номер команды: "))
+    print(ru.LOOK)
+    print(ru.UP)
+    print(ru.DOWN)
+    print(ru.COUNT_FILE)
+    print(ru.SIZE_F)
+    print(ru.FIND_F)
+    print(ru.EXIT)
+    command = int(input(ru.INPUT_NUM))
     while command < 1 or command > 7:
-        command = int(input("Not correct :( Try again :) "))
+        command = int(input(ru.WRONG_C))
     return command
 
 
@@ -43,34 +46,33 @@ def runCommand(command):
         target = input()
         name = findFiles(target, currentDir)
         if name == []:
-            print(f"Файлы с '{target}' в имени в каталоге {currentDir} не найдены.")
+            print(ru.FILE_WITH, currentDir, ru.F_NOT_FND)
         else:
             print(name)
 
 
 def directory(directory):
     files_under = os.listdir(directory)
-    print(files_under)
+    print(ru.IN_CTLG)
     for i in files_under:
         print(i)
-    print('in catalogue:', directory)
 
 
 def moveUp():
-    os.chdir("../")
+    os.chdir(WAY_UP)
     currentDir = os.getcwd()
-    print('current catalogue:', currentDir)
+    print(ru.CURRENT, currentDir)
 
 
 def moveDown(currentDir):
-    tryDir = input('please, write catalogue name: ')
+    tryDir = input(ru.INPUT_CTLG)
     tryingDir = os.path.join(currentDir, tryDir)
     if os.path.exists(tryingDir):
         os.chdir(tryingDir)
         currentDir = os.getcwd()
-        print('current catalogue:', currentDir)
+        print(ru.CURRENT, currentDir)
     else:
-        print('name is not found, try again')
+        print(ru.NOT_FOUND)
 
 
 def countFiles(path):
